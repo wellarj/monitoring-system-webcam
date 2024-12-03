@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Câmeras Disponíveis</title>
+</head>
+<body>
+    <h1>Câmeras Disponíveis</h1>
+    <ul id="camera-list"></ul>
+
+    <script>
+        // Função para listar as câmeras
+        function listCameras() {
+            navigator.mediaDevices.enumerateDevices()
+                .then(devices => {
+                    const cameraList = document.getElementById('camera-list');
+                    cameraList.innerHTML = ''; // Limpa a lista antes de adicionar novos itens
+
+                    devices.forEach(device => {
+                        if (device.kind === 'videoinput') {
+                            const camTokenName = device.label.replace(/\s?\(.*\)/, '');
+                            const listItem = document.createElement('li');
+                            listItem.innerHTML = `
+                                ${device.label || 'Câmera desconhecida'}
+                                <br>
+                                <a target="_blank" href="/view?cameraId=${device.deviceId}">Visualizar</a>
+                                <a target="_blank" href="/start/${camTokenName}">Iniciar Gravação</a>
+                                <a target="_blank" href="/stop/${camTokenName}">Parar Gravação</a>
+                            `;
+                            cameraList.appendChild(listItem);
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.error('Erro ao listar dispositivos de mídia:', err);
+                });
+        }
+
+
+        // Função para acessar e visualizar a câmera selecionada
+        function viewCamera(cameraId) {
+            window.location.href = `/view/${cameraId}`; // Redireciona para a página de visualização
+        }
+
+        // Listar câmeras quando a página carregar
+        window.onload = listCameras;
+    </script>
+</body>
+</html>

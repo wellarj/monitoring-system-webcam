@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Vídeos Gravados</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vídeos Gravados</h1>
+  <ul id="videoList"></ul>
+
+  <script>
+    // Função para carregar e exibir vídeos gravados
+    async function loadVideos() {
+      const response = await fetch('/videos-get');
+      const videos = await response.json();
+
+      const videoList = document.getElementById('videoList');
+      videoList.innerHTML = '';
+
+      videos.forEach(video => {
+        const listItem = document.createElement('li');
+
+        const videoLink = document.createElement('a');
+        videoLink.href = `/assistir?video=${video}`; // Link para assistir o vídeo
+        videoLink.textContent = `Assistir: ${video}`;
+
+        listItem.appendChild(videoLink);
+        
+        videoList.appendChild(listItem);
+      });
+    }
+
+    // Carregar vídeos ao carregar a página
+    window.onload = loadVideos;
+  </script>
+</body>
+</html>

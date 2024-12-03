@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transmissão ao Vivo</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+  <video id="video" controls autoplay muted style="width: 100%; height: auto;"></video>
+  <script>
+    const video = document.getElementById('video');
+    const hls = new Hls({
+      liveSyncDurationCount: 1, // Apenas 1 segmento de atraso
+      liveMaxLatencyDurationCount: 2 // Máximo de 2 segmentos de atraso permitido
+    });
+
+    hls.loadSource('/stream/HD%20User%20Facing/index.m3u8');
+    hls.attachMedia(video);
+
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      video.play();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistir Vídeo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    video {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      margin-top: 20px;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="videoTitle">Assistindo...</h1>
+  <video id="videoPlayer" controls>
+    <source id="videoSource" src="" type="video/mp4">
+    Seu navegador não suporta o elemento de vídeo.
+  </video>
+  <br>
+  <a href="/" id="backLink">Voltar à lista de vídeos</a>
+
+  <script>
+    // Função para pegar o nome do vídeo na URL e atualizar o player
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const videoName = urlParams.get('video');
+      
+      if (videoName) {
+        // Atualiza o título e o player com o nome do vídeo
+        document.getElementById('videoTitle').textContent = `Assistindo: ${videoName}`;
+        document.getElementById('videoSource').src = `/videos/${videoName}`; // A URL do vídeo
+        document.getElementById('videoPlayer').load();
+      } else {
+        alert('Vídeo não encontrado.');
+      }
+    };
+  </script>
+</body>
+</html>

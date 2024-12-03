@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Câmeras Disponíveis</title>
+</head>
+<body>
+    <h1>Câmeras Disponíveis</h1>
+    <ul id="camera-list"></ul>
+
+    <script>
+        // Função para listar as câmeras
+        function listCameras() {
+            fetch('/cameras')  // Requisição para obter a lista de câmeras do servidor
+                .then(response => response.json())
+                .then(cameras => {
+                    const cameraList = document.getElementById('camera-list');
+                    cameraList.innerHTML = ''; // Limpa a lista antes de adicionar novos itens
+
+                    if (cameras.length === 0) {
+                        cameraList.innerHTML = 'Nenhuma câmera encontrada.';
+                    } else {
+                        cameras.forEach(camera => {
+                            const listItem = document.createElement('li');
+                            listItem.innerHTML = `
+                                ${camera}
+                                <br>
+                                <a target="_blank" href="/view?cameraId=${camera}">Visualizar</a>
+                                <a target="_blank" href="/start/${camera}">Iniciar Gravação</a>
+                                <a target="_blank" href="/stop/${camera}">Parar Gravação</a>
+                            `;
+                            cameraList.appendChild(listItem);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error('Erro ao listar câmeras:', err);
+                });
+        }
+
+        // Listar câmeras quando a página carregar
+        window.onload = listCameras;
+    </script>
+</body>
+</html>
